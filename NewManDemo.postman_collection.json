@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "f9d6bc90-08ca-41ad-be72-1ed81f64c4a6",
+		"name": "NewManDemo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST",
+			"item": [
+				{
+					"name": "Create_Issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let body = pm.response.json();\r",
+									"let number = body.number;\r",
+									"console.log(\"BODY : \", body);\r",
+									"\r",
+									"pm.test(\"Check status code\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check status\", function() {\r",
+									"    pm.expect(pm.response.status).to.equal(\"Created\");\r",
+									"});\r",
+									"pm.test(\"Check status code ES6\", () => {\r",
+									"    pm.expect(pm.response.code, \"STATUS CODE\").to.equal(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check status code other way\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check issue URL\", function() {\r",
+									"    let url = \"https://api.github.com/repos/VeniaminVasilev/Postman/issues/\" + number;\r",
+									"    pm.expect(body.url, \"Body URL\").to.equal(url);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check issue number\", function() {\r",
+									"    pm.expect(body.number, \"Number property\").to.be.greaterThan(1);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check id number\", function() {\r",
+									"    pm.expect(body.id, \"id property\").to.be.greaterThan(1);\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{token}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "VeniaminVasilev",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"title\" : \"First issue from Postman\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"{{user}}",
+								"{{repo}}",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Issue_with_Labels",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check status code\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{token}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "VeniaminVasilev",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Second issue from Postman with labels\",\r\n    \"labels\": [\r\n        \"bug\",\r\n        \"UI\",\r\n        \"user\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"{{user}}",
+								"{{repo}}",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

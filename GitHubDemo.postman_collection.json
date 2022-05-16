@@ -1,0 +1,319 @@
+{
+	"info": {
+		"_postman_id": "70e0a1ee-0e8e-4d7a-b2e2-7add2f3c6449",
+		"name": "GitHubDemo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET",
+			"item": [
+				{
+					"name": "GET_All_Issues",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var body = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check body length\", function() {\r",
+									"    var body = pm.response.json();\r",
+									"    // pm.expect(body.length, \"Body length property\").to.equal(7);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check title\", function() {\r",
+									"    var body = pm.response.json();\r",
+									"    pm.expect(body[0].title).to.include(\"Postman\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"{{user}}",
+								"{{repo}}",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET_Single_Issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let body = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check status code\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check status\", function() {\r",
+									"    pm.expect(pm.response.status).to.equal(\"OK\");\r",
+									"});\r",
+									"pm.test(\"Check status code ES6\", () => {\r",
+									"    pm.expect(pm.response.code, \"STATUS CODE\").to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check status code other way\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check issue URL\", function() {\r",
+									"    pm.expect(body.url, \"Body URL\").to.equal(\"https://api.github.com/repos/VeniaminVasilev/Postman/issues/1\");\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check issue number\", function() {\r",
+									"    pm.expect(body.number, \"Number property\").to.equal(1);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check id number\", function() {\r",
+									"    pm.expect(body.id, \"id property\").to.equal(1236354485);\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"{{user}}",
+								"{{repo}}",
+								"issues",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST",
+			"item": [
+				{
+					"name": "Create_Issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let body = pm.response.json();\r",
+									"let number = body.number;\r",
+									"console.log(\"BODY : \", body);\r",
+									"\r",
+									"pm.test(\"Check status code\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check status\", function() {\r",
+									"    pm.expect(pm.response.status).to.equal(\"Created\");\r",
+									"});\r",
+									"pm.test(\"Check status code ES6\", () => {\r",
+									"    pm.expect(pm.response.code, \"STATUS CODE\").to.equal(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check status code other way\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check issue URL\", function() {\r",
+									"    let url = \"https://api.github.com/repos/VeniaminVasilev/Postman/issues/\" + number;\r",
+									"    pm.expect(body.url, \"Body URL\").to.equal(url);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check issue number\", function() {\r",
+									"    pm.expect(body.number, \"Number property\").to.be.greaterThan(1);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check id number\", function() {\r",
+									"    pm.expect(body.id, \"id property\").to.be.greaterThan(1);\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{token}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "VeniaminVasilev",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"title\" : \"First issue from Postman\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"{{user}}",
+								"{{repo}}",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Issue_with_Labels",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{token}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "VeniaminVasilev",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Second issue from Postman with labels\",\r\n    \"labels\": [\r\n        \"bug\",\r\n        \"UI\",\r\n        \"user\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"{{user}}",
+								"{{repo}}",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UPDATE",
+			"item": []
+		},
+		{
+			"name": "DELETE",
+			"item": [
+				{
+					"name": "Delete_Issue",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{token}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "VeniaminVasilev",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/{{user}}/{{repo}}/issues/4",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"{{user}}",
+								"{{repo}}",
+								"issues",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
